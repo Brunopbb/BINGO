@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Espectro da Skarab</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+  <script>
+    let currentImage = '';
+
+    async function fetchImage(url) {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.image) {
+        document.getElementById('graph-img').src = data.image;
+        document.getElementById('timestamp').innerText = data.timestamp;
+        currentImage = data.image;
+      }
+    }
+
+    function init() {
+      fetchImage('/api/plot/');
+      setInterval(() => fetchImage('/api/plot/'), 5000);
+
+      document.getElementById('prev-btn').onclick = () => fetchImage('/api/prev');
+      document.getElementById('next-btn').onclick = () => fetchImage('/api/next');
+    }
+
+    window.onload = init;
+  </script>
+</head>
+<body>
+  <header class="header">
+    <h1>Espectro da Skarab</h1>
+    <p>Horário da última atualização: <span id="timestamp">--:--:--</span></p>
+  </header>
+
+  <div class="graph-container">
+    <img id="graph-img" src="" alt="Gráfico" class="graph-image"/>
+    <div>
+      <button id="prev-btn">← Anterior</button>
+      <button id="next-btn">Próxima →</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <img src="/static/logos/bingow.svg" alt="Logo Bingo" class="footer-logo-left logo" />
+    <div class="footer-text">
+      Colaboradores: Raiff Santos, Jordany Vieira, Rafael Batista, Lucas Santana, Igor Guimarães,
+      Chayenny Rodrigues, Alisson Telles, Amilcar Queiroz, Edmar Gurjão
+    </div>
+    <img src="/static/logos/labmet.svg" alt="Logo Labmet" class="footer-logo-right logo" />
+  </footer>
+</body>
+</html>
