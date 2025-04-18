@@ -1,54 +1,36 @@
-from flask import Flask, render_template, jsonify, send_file
+# app.py (Backend Flask)
+from flask import Flask, jsonify, send_from_directory
+import base64
 import os
 from datetime import datetime
+from io import BytesIO
+from PIL import Image
 
 app = Flask(__name__)
 
-IMG_DIR1 = "/home/bingo/disco/Data_Uirapuru/figure_uirapuru"
-IMG_DIR2 = "/home/bingo/disco/anatel_data/figure"
+# Configurações
+IMAGE_PATH = '/home/uirapuru/disco/anatel_data/figure/test1.png'
+STATIC_FOLDER = 'static'
 
-current_index = 0
+@app.route('/')
+def home():
+    return send_from_directory('.', 'index.html')
 
-def get_all_images():
-    images1 = sorted([f for f in os.listdir(IMG_DIR1) if f.endswith(('.png', '.jpg'))])
-    images2 = sorted([f for f in os.listdir(IMG_DIR2) if f.endswith(('.png', '.jpg'))])
-    return [("1", img) for img in images1] + [("2", img) for img in images2]
+@app.route('/plot')
+def generate_plot():
+    try:
+        if os.path.exists(IMAGE_PATH):
+            with Image.open(IMAGE_PATH) as img:
+                buffer = BytesIO()
+                img.save(buffer, format="PNG")
+                image_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+                return jsonify({
+                    "image": f"data:image/png;base64,{image_base64}",
+                    "timestamp": datetime.now().isoformat()
+                })
+        return jsonify({"error": "Imagem não encontrada"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-@app.route("/api/plot/")
-def get_image():
-    global current_index
-    images = get_all_images()
-    if not images:
-        return jsonify({"error": "No images found."}), 404
-
-    folder_tag, img_name = images[current_index % len(images)]
-    img_path = f"/image/1/{img_name}" if folder_tag == "1" else f"/image/2/{img_name}"
-
-    return jsonify({
-        "image": img_path,
-        "timestamp": datetime.now().strftime("%H:%M:%S")
-    })
-
-@app.route("/api/next")
-def next_image():
-    global current_index
-    current_index += 1
-    return get_image()
-
-@app.route("/api/prev")
-def prev_image():
-    global current_index
-    current_index -= 1
-    return get_image()
-
-@app.route("/image/<folder>/<filename>")
-def serve_image(folder, filename):
-    path = IMG_DIR1 if folder == "1" else IMG_DIR2
-    return send_file(os.path.join(path, filename))
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    app.run(debug=True)
