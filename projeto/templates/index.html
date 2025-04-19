@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espectro da Skarab</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Espectro da Skarab</h1>
+        <p>Horário da última atualização: <span id="last-update"></span></p>
+    </header>
+
+    <div class="graph-container">
+        <button class="carousel-button left" onclick="previousImage()">&#10094;</button>
+        <img src="" alt="Espectro da Skarab" class="graph-image" id="spectrum-image">
+        <button class="carousel-button right" onclick="nextImage()">&#10095;</button>
+    </div>
+
+    <footer class="footer">
+        <div class="logo-container">
+            <img src="/static/images/bingow.svg" alt="Logo Bingo" class="logo">
+            <p>Colaboradores: Raiff Santos, Jordany Vieira, Rafael Batista, Lucas Santana, Igor Guimarães, Chayenny Rodrigues, Alisson Telles, Amilcar Queiroz, Edmar Gurjão</p>
+            <img src="/static/images/labmet.svg" alt="Logo Labmet" class="logo">
+        </div>
+    </footer>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
