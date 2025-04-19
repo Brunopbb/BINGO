@@ -9,7 +9,7 @@ from PIL import Image
 app = Flask(__name__)
 
 # Configurações
-IMAGE_PATH = '/home/uirapuru/disco/anatel_data/figure/test1.png'
+IMAGE_PATH = '/home/bingo/disco/anatel_data/figure/test1.png'
 STATIC_FOLDER = 'static'
 
 @app.route('/')
