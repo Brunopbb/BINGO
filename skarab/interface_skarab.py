@@ -72,7 +72,12 @@ class RealTimePlot(object):
 
         self.skarab_class = skarab
         self.parent = parent
-        self.skarab = skarab.connect_to_skarab()
+        self.skarab = skarab.skarab  
+        self.running = True
+        if not self.skarab:
+            print("SKARAB não conectada, abortando RealTimePlot.")
+            return
+
 
         self.tempo_inicial = None
         self.tempos = []
@@ -81,7 +86,7 @@ class RealTimePlot(object):
         self.fig = Figure(figsize=(5, 4), dpi=100)
         self.ax = self.fig.add_subplot(111)
         self.ax.set_title("Temperatura em tempo real")
-        self.ax.set_xlabel("Tempo (s)")
+        self.ax.set_xlabel("Tempo (h)")
         self.ax.set_ylabel(u"Temperatura (°C)")
         self.ax.grid(True)
 
@@ -159,6 +164,9 @@ class RealTimePlot(object):
 
         self.update_pwm_labels()
 
+    def parar(self):
+        self.running = False
+
     def update_plot(self):
 
         def extract_float(val):
@@ -172,15 +180,19 @@ class RealTimePlot(object):
             except:
                 return 0.0
 
-        while True:
+        while self.running:
             try:
+                if not self.skarab_class.skarab or not self.skarab_class.skarab.transport:
+                    time.sleep(1)
+                    continue
+
                 transport = self.skarab_class.skarab.transport
 
 
                 mezz0 = transport.get_sensor_data(sd.sensor_list['mezzanine_site_0_temperature_degC'])
                 mezz1 = transport.get_sensor_data(sd.sensor_list['mezzanine_site_1_temperature_degC'])
 
-                now = time.time() - self.start_time
+                now = (time.time() - self.start_time) / 3600.0
                 self.time_data.append(now)
 
                 t_fpga = extract_float(mezz1.get("fpga_temperature_degC", "0"))
@@ -257,6 +269,9 @@ class RealTimePlot(object):
                 raise ValueError("O valor do PWM deve estar entre 0 e 100")
             
             set_fan_speed = SetFanSpeedReq(idx, valor)
+            if not self.skarab or not self.skarab.transport:
+                raise Exception("SKARAB não conectada")
+
             response = self.skarab.transport.send_packet(set_fan_speed)
 
             if isinstance(response, SetFanSpeedResp):
