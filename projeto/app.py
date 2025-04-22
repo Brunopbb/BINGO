@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, jsonify, render_template
 import base64
 import os
@@ -13,6 +14,7 @@ IMAGE_PATHS = [
     '/home/bingo/disco/Data_Uirapuru/figure_uirapuru/test1.png'
 ]
 
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -22,6 +24,7 @@ def home():
 def generate_plot():
     try:
         images_base64 = []
+        
         for image_path in IMAGE_PATHS:
             print(f"Verificando imagem: {image_path}")
             if os.path.exists(image_path):
@@ -31,6 +34,7 @@ def generate_plot():
                     img.save(buffer, format="PNG")
                     image_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
                     images_base64.append(f"data:image/png;base64,{image_base64}")
+                    
         if images_base64:
             print("Imagens processadas com sucesso")
             return jsonify({
