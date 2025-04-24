@@ -216,8 +216,15 @@ class RealTimePlot(object):
                 for i in range(len(nomes)):
                     self.temp_labels[i].config(text="{}: {:.1f}°C".format(nomes[i], temps[i]))
 
+                window_size = 5  # tamanho da janela da média móvel
                 for chave, curva in self.lines.items():
-                    curva.set_data(self.time_data, self.temperaturas[chave])
+                    dados = np.array(self.temperaturas[chave])
+                    if len(dados) >= window_size:
+                        suavizado = np.convolve(dados, np.ones(window_size)/window_size, mode='valid')
+                        tempos_suavizados = self.time_data[-len(suavizado):]
+                        curva.set_data(tempos_suavizados, suavizado)
+                    else:
+                        curva.set_data(self.time_data, dados)
 
                 self.ax.relim()
                 self.ax.autoscale_view()
