@@ -8,13 +8,6 @@ from PIL import Image
 
 app = Flask(__name__)
 
-# Lista de caminhos completos para as imagens em diferentes pastas
-IMAGE_PATHS = [
-    '/home/bingo/disco/anatel_data/figure/test1.png',
-    '/home/bingo/disco/Data_Uirapuru/figure_uirapuru/test1.png'
-]
-
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -24,8 +17,17 @@ def home():
 def generate_plot():
     try:
         images_base64 = []
+
+        # Define data atual
+        current_date = datetime.now().strftime('%Y-%m-%d')
+
+        # Atualiza caminhos das imagens com a data atual
+        image_paths = [
+            f'/home/bingo/test_anatel/{current_date}/figure/test1.png',
+            f'/home/bingo/test_uirapuru/{current_date}/figure_uirapuru/test1.png'
+        ]
         
-        for image_path in IMAGE_PATHS:
+        for image_path in image_paths:
             print(f"Verificando imagem: {image_path}")
             if os.path.exists(image_path):
                 print(f"Imagem encontrada: {image_path}")

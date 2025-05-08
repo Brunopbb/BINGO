@@ -17,12 +17,19 @@
     </header>
 
     <main class="flex-grow-1 d-flex flex-column align-items-center justify-content-start py-4 px-3">
-        <div class="position-relative w-100" style="max-width: 900px;">
-            <button class="btn btn-dark position-absolute top-50 start-0 translate-middle-y" onclick="previousImage()">&#10094;</button>
+        <div class="spectrum-container position-relative w-100" style="max-width: 900px;">
+            <!-- Setas sobre a imagem (visível em telas médias e maiores) -->
+            <button class="carousel-button left d-none d-md-block" onclick="previousImage()">&#10094;</button>
             
-            <img src="" alt="Espectro da Skarab" class="img-fluid rounded mx-auto d-block" id="spectrum-image">
+            <img src="" alt="Espectro da Skarab" class="img-fluid rounded mx-auto d-block graph-image" id="spectrum-image">
 
-            <button class="btn btn-dark position-absolute top-50 end-0 translate-middle-y" onclick="nextImage()">&#10095;</button>
+            <button class="carousel-button right d-none d-md-block" onclick="nextImage()">&#10095;</button>
+
+            <!-- Setas abaixo da imagem (visível apenas no mobile) -->
+            <div class="d-flex justify-content-between mt-3 d-md-none">
+                <button class="btn btn-dark w-45" onclick="previousImage()">&#10094; Anterior</button>
+                <button class="btn btn-dark w-45" onclick="nextImage()">Próximo &#10095;</button>
+            </div>
         </div>
 
         <!-- Legenda com fundo preto e opacidade -->
@@ -31,13 +38,14 @@
         </div>
     </main>
 
-    <footer class="bg-dark text-white py-3">
+    <footer class="bg-dark text-white py-3 mt-auto">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start">
             <img src="/static/images/bingow.svg" alt="Logo Bingo" class="logo mb-2 mb-md-0" style="max-width: 60px;">
             
             <div class="flex-fill px-3">
                 <p class="mb-1 small">
-                    Colaboradores: Lucas Santana, Rafael Batista, Raiff Santos, Jordany Vieira, Igor Guimarães, Chayenny Rodrigues, Alisson Telles, Amilcar Queiroz, Edmar Gurjão, Bruno Almeida
+                    Colaboradores: Lucas Santana, Rafael Batista, Raiff Santos, Jordany Vieira, Igor Guimarães, Chayenny Rodrigues, Alisson Telles, Bruno Almeida, Amilcar Queiroz, 
+                    Edmar Gurjão, Elcio Abdalla
                 </p>
             </div>
             
@@ -49,3 +57,4 @@
     <script src="/static/js/script.js"></script>
 </body>
 </html>
+
