@@ -38,5 +38,5 @@ function previousImage() {
 }
 
 // Inicia o carregamento periódico
-setInterval(fetchImages, 3000);
+setInterval(fetchImages, 2000);
 fetchImages();

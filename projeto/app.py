@@ -24,7 +24,7 @@ def generate_plot():
         # Atualiza caminhos das imagens com a data atual
         image_paths = [
             f'/home/bingo/test_anatel/{current_date}/figure/test1.png',
-            f'/home/bingo/test_uirapuru/{current_date}/figure_uirapuru/test1.png'
+            f'/home/bingo/test_uirapuru/{current_date}/figure/test1.png'
         ]
         
         for image_path in image_paths:
