@@ -453,7 +453,7 @@ try:
     counter_checkpoints = 0
     central_freq_MHZ = channels_ddc_centre_freq / 1000000
  
-    inicio = dt.datetime.now()
+    inicio = dt.datetime.utcnow()
     inicio_str = inicio.strftime("_%Y-%m-%d_%H%M%S")
     aux_inicio_str = inicio_str
     print("---------------------------------------------------------------")
@@ -463,7 +463,7 @@ try:
     #average_aux_meusdados = []
 
     # Define a data atual e cria o diretório correspondente
-    current_date = dt.datetime.now().strftime("%Y-%m-%d")
+    current_date = dt.datetime.utcnow().strftime("%Y-%m-%d")
     output_dir = os.path.join(options.folder_out, current_date)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -478,7 +478,7 @@ try:
                 print 'Checkpoint!'
 
                 # Verifica se mudou o dia
-                new_date = dt.datetime.now().strftime("%Y-%m-%d")
+                new_date = dt.datetime.utcnow().strftime("%Y-%m-%d")
                 if new_date != current_date:
                     current_date = new_date
                     output_dir = os.path.join(options.folder_out, current_date)
@@ -491,7 +491,7 @@ try:
                 np.save(realtime_path, average_meusdados)
 
                 # Salva histórico no arquivo .npz por minuto
-                aux_final = dt.datetime.now()
+                aux_final = dt.datetime.utcnow()
                 aux_final_str = aux_final.strftime("_%Y-%m-%d_%H%M%S")
                 timestamp_key = aux_final.strftime("%H%M%S")
                 minute_str = aux_final.strftime("%H%M")
@@ -516,7 +516,7 @@ try:
                     break
 
     except KeyboardInterrupt:
-        final = dt.datetime.now()
+        final = dt.datetime.utcnow()
         tempo = final - inicio
         print tempo
         final_str = final.strftime("_%Y-%m-%d_%H%M%S")

@@ -89,7 +89,7 @@ def monitor(base_dir):
     last_date = None
 
     while True:
-        current_date = datetime.now().strftime("%Y-%m-%d")
+        current_date = datetime.utcnow().strftime("%Y-%m-%d")
         target_dir = os.path.join(base_dir, current_date)
         target_file = os.path.join(target_dir, 'realtime.npy')
 
