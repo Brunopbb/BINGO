@@ -1,6 +1,6 @@
 let currentImageIndex = 0;
 let images = [];
-const captions = ["Sinais de rádio CG", "Uirapuru"];
+const captions = ["CG radio signals", "Uirapuru"];
 
 function fetchImages() {
     fetch('/plot')
@@ -23,7 +23,7 @@ function updateDisplayedImage() {
 
         imageElement.src = images[currentImageIndex];
         captionElement.textContent = captions[currentImageIndex] || 'Sem legenda';
-        updateTimeElement.textContent = new Date().toLocaleTimeString();
+        updateTimeElement.textContent = new Date().toUTCString();
     }
 }
 
